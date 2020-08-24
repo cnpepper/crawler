@@ -1,0 +1,10 @@
+# IDE left over
+.DS_Store
+.vscode
+.idea
+*.pyc
+*.cache
+.*.swp
+
+# cache and misc
+__pycache__/
