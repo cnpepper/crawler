@@ -13,10 +13,9 @@ driver = webdriver.Chrome(chrome_options=chrome_options)
 print('程序启动...', end="\n")
 first_url = 'http://jifcw.com/jn_web_dremis_dev/web_house_dir/Show_GoodsHouse_More.aspx'
 driver.get(first_url)
-time.sleep(3)
+time.sleep(5)
 print('打开页面...', end="\n")
 content_html = driver.page_source
-# 解析所有的项目按钮
 
 
 def content_parser(html):
@@ -25,22 +24,13 @@ def content_parser(html):
     return re.findall(p, html)
 
 
-print('获取按钮列表...', end="\n")
-button_list = content_parser(content_html)
-
-
 def detail_save(num, file_name, content):
     print('保存详情...', end="\n")
     with open('./'+str(num)+'_'+str(file_name)+'.txt', 'w') as f:
         f.write(content)
 
 
-# 总页数
-page_count = 23
-for page_no in range(0, page_count):
-    print('获取第'+str(page_no)+'页...', end="\n")
-    time.sleep(3)
-    # len(button_list)
+def detail_parser(button_list):
     for index in range(0, len(button_list)):
         # 选取要点击的详情按钮
         button = driver.find_element_by_id(button_list[index])
@@ -50,8 +40,20 @@ for page_no in range(0, page_count):
         file_name = button_list[index]
         detail_save(page_no, file_name, driver.page_source)
         # 回退
-        time.sleep(1)
+        print('回退...', end="\n")
         driver.back()
+        time.sleep(2)
+
+
+# 总页数
+page_count = 23
+for page_no in range(0, page_count):
+    print('获取第'+str(page_no)+'页...', end="\n")
+    # 解析所有的项目按钮
+    button_list = content_parser(content_html)
+    # 获取详情
+    detail_parser(button_list)
     # 进行下一页
     button_next = driver.find_element_by_link_text('下一页')
     button_next.click()
+    time.sleep(5)

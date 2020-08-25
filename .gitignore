@@ -8,3 +8,4 @@
 
 # cache and misc
 __pycache__/
+html/*
